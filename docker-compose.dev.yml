@@ -1,0 +1,47 @@
+version: '3.7'
+services:
+  postgres:
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+  # redis
+  redis:
+    command: ./run.sh --appendonly yes
+  # redis-commander
+  redis_commander:
+    container_name: "redis-commander"
+    pid: "redis-commander"
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=redispassword
+      - REDIS_HOSTS=local:redis:6379
+    depends_on:
+      - redis
+    ports:
+      - "8081:8081"
+  # django
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SQL_HOST=postgres
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/home/sandbox/backend/
+    depends_on:
+      - postgres
+      - front-end
+  # vuejs
+  front-end:
+    build: ./front-end
+    ports:
+      - "8001:8001"
+    environment:
+      - BACKEND_SERVICE=backend
+      - BACKEND_SERVICE_PORT=8000
+    command: npm run serve 
+    volumes:
+      - ./front-end:/home/sandbox/front-end/
+volumes:
+  postgres_volume:

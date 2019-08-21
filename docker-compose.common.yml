@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: "postgres"
+    pid: "postgres"
+    image: postgres:latest
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: Ro-main17
+      POSTGRES_DB: sandbox_db
+  # redis
+  redis:
+    hostname: redis
+    container_name: "redis"
+    pid: "redis"
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_PASSWORD=redispassword
+    ports:
+      - "6379:6379"
+  # django
+  backend:
+    container_name: "backend"
+    pid: "backend"
+    environment:
+      - TZ=Etc/UTC
+    expose:
+      - "8000"
+    working_dir: /home/sandbox/backend/
+    depends_on:
+      - postgres
+      - front-end
+  # vuejs / node
+  front-end:
+    container_name: "front-end"
+    pid: "front-end"
+    environment:
+      - TZ=Etc/UTC
+    expose:
+      - "8001"
+    working_dir: /home/sandbox/front-end/
+ 
