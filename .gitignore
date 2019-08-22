@@ -33,10 +33,6 @@ checkpoint/
 *.pyc
 __pycache__/
 
-### Django migrations ###
-!smartsuite/core/migrations/__init__.py
-!smartsuite/smartcounting/migrations/__init__.py
-
 # Django media
 media/
 
@@ -44,11 +40,6 @@ media/
 *.csv
 
 #local_settings.py
-
-# Celery
-*.pid
-smartsuite/celerybeat-schedule.db
-!smartsuite/smaRtSuite/__init__.py
 
 # Distribution / packaging
 .Python
