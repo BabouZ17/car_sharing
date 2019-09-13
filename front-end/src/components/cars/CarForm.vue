@@ -54,9 +54,13 @@
               ></v-text-field>
               <v-select 
                 prepend-icon="build"
-                :carmakers="carmakers"
+                :items="carmakers"
                 label="Carmaker"
+                item-text="name"
+                item-value="id"
+                v-model="id"
                 filled
+                required
               >
               </v-select>
             </v-flex>
@@ -86,38 +90,68 @@
 </template>
 
 <script>
+  import {mapActions, mapState} from 'vuex';
+  import carsActions from '../../store/actions-types/carsActions';
+  import router from '../../router';
+
   export default {
     data: function(){
       return {
         car: {},
+        carmaker: null,
         valid: false,
         model: '',
         seats: null,
         year: null,
-        carmakers: [],
         modelRules: [
           v => !!v || 'Model is required',
-          v => (v && v.length <= 50) || 'Model must be less than 50 characters',
+          v => (v && v.length <= 50) || 'Model must be less than 50 characters'
         ],
         yearRules: [
           v => !!v || 'Year is required',
-          v => (v && 1900 <= v <= Date.now().getFullYear()) || 'Year must be between 1950 and current year'
+          v => (v >= 1900 && v <= new Date().getFullYear()) || 'Year must be between 1950 and current year'
         ],
         seatsRules: [
           v => !!v || 'Seats is required',
-          v => (1 <= v <= 20) || 'Seats must be between 1 and 20'
+          v => (v >= 1 && v <= 20) || 'Seats must be between 1 and 20'
         ],
       }
     },
     methods: {
-      validate: function(){
+      ...mapActions([
+        carsActions.CREATE_CAR
+      ]),
+      submit: async function(){
         if (this.$refs.form.validate()){
-          console.log("valid");
-        }
+          if (this.carmaker.id != undefined){
+            let payload = {
+              "id": this.car.id,
+              "name": this.name,
+              "seats": this.seats,
+              "year": this.year,
+              "maker": this.carmaker
+            };
+            await this.UPDATE_CAR(payload);
+          } else {
+            let payload = {
+              "model": this.model,
+              "seats": this.seats,
+              "year": this.year,
+              "maker": this.carmaker
+            };
+            await this.CREATE_CAR(payload);
+          }
+          router.push({name: "cars_show"}); 
+        } 
       },
       reset: function(){
         this.$refs.form.reset();
       }
+    },
+    computed: {
+      ...mapState([
+        'carmakers',
+      ])
     }
   }
 </script>
