@@ -2,7 +2,6 @@
   <v-footer
     color="primary lighten-3"
     padless
-    absolute
   >
     <v-layout
       justify-center

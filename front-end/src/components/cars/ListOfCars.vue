@@ -1,6 +1,14 @@
 <template>
   <v-container>
-    <v-layout>
+    <v-layout v-if="loading"
+      justify-center
+    >
+      <v-progress-circular
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+    </v-layout>
+    <v-layout v-if="!loading">
       <v-flex md2>
         <h1>{{ title }}</h1>
       </v-flex>
@@ -13,7 +21,7 @@
       </v-flex>
     </v-layout>
     <br />
-    <v-layout>
+    <v-layout v-if="!loading">
       <v-flex>
         <v-simple-table>
           <thead>
@@ -56,7 +64,6 @@
 </template>
 
 <script>
-  import axios from 'axios';
   import {mapState, mapActions} from 'vuex';
   import carActions from '../../store/actions-types/carsActions';
   import router from '../../router';
@@ -97,7 +104,8 @@
     },
     computed: {
       ...mapState([
-        'cars'
+        'cars',
+        'loading'
       ])
     }
   };

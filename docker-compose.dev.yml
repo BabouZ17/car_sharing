@@ -3,22 +3,6 @@ services:
   postgres:
     volumes:
       - postgres_volume:/var/lib/postgresql/data
-  # redis
-  redis:
-    command: ./run.sh --appendonly yes
-  # redis-commander
-  redis_commander:
-    container_name: "redis-commander"
-    pid: "redis-commander"
-    image: rediscommander/redis-commander:latest
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PASSWORD=redispassword
-      - REDIS_HOSTS=local:redis:6379
-    depends_on:
-      - redis
-    ports:
-      - "8081:8081"
   # django
   backend:
     build: ./backend

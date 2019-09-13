@@ -32,7 +32,8 @@ const router = new Router({
         {
           path: 'car/:car_id/update',
           name: 'car_update',
-          component: CarForm
+          component: CarForm,
+          props: true
         },
         {
           path: 'cars',
@@ -47,7 +48,8 @@ const router = new Router({
         {
           path: 'carmaker/:carmaker_id/update',
           name: 'carmaker_update',
-          component: CarmakerForm
+          component: CarmakerForm,
+          props: true
         },
         {
           path: 'carmakers',

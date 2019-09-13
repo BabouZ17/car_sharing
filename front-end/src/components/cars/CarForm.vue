@@ -9,8 +9,13 @@
         offset-md3
     >
     <v-card>
-        <v-card-title>
-            New Car
+        <v-card-title
+          v-if="car.model != undefined"
+        >
+            Edit of car: {{ car.model }}
+        </v-card-title>
+        <v-card-title v-else>
+          New car
         </v-card-title>
         <v-card-text>
           <v-container 
@@ -21,32 +26,56 @@
             <v-flex
                 xs12
                 md6
-                offset-md4
+                offset-md3
             >
               <v-text-field
-                v-model="name"
-                :rules="nameRules"
-                :counter="10"
+                v-model="model"
+                :rules="modelRules"
+                :counter="50"
                 label="Model"
+                prepend-icon="directions_car"
                 required
               ></v-text-field>
               <v-text-field
-                v-model="name"
-                :rules="nameRules"
-                :counter="10"
-                label="Model"
+                v-model="seats"
+                :rules="seatsRules"
+                label="Seats"
+                type="number"
+                prepend-icon="airline_seat_recline_normal"
                 required
               ></v-text-field>
+              <v-text-field
+                v-model="year"
+                :rules="yearRules"
+                label="Year"
+                type="number"
+                prepend-icon="date_range"
+                required
+              ></v-text-field>
+              <v-select 
+                prepend-icon="build"
+                :carmakers="carmakers"
+                label="Carmaker"
+                filled
+              >
+              </v-select>
             </v-flex>
           </v-layout>
-            <v-layout>
+            <v-layout justify-center=True>
               <v-btn
                 :disabled="!valid"
                 color="success"
                 class="mr-4"
-                @click="validate"
+                @click="submit"
               >
                 Validate
+              </v-btn>
+              <v-btn
+                color="red"
+                class="mr-4"
+                @click="reset"
+              >
+                Reset
               </v-btn>
             </v-layout>
           </v-container>
@@ -60,12 +89,24 @@
   export default {
     data: function(){
       return {
+        car: {},
         valid: false,
-        name: '',
-        nameRules: [
-          v => !!v || 'Name is required',
-          v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-        ]
+        model: '',
+        seats: null,
+        year: null,
+        carmakers: [],
+        modelRules: [
+          v => !!v || 'Model is required',
+          v => (v && v.length <= 50) || 'Model must be less than 50 characters',
+        ],
+        yearRules: [
+          v => !!v || 'Year is required',
+          v => (v && 1900 <= v <= Date.now().getFullYear()) || 'Year must be between 1950 and current year'
+        ],
+        seatsRules: [
+          v => !!v || 'Seats is required',
+          v => (1 <= v <= 20) || 'Seats must be between 1 and 20'
+        ],
       }
     },
     methods: {
@@ -73,6 +114,9 @@
         if (this.$refs.form.validate()){
           console.log("valid");
         }
+      },
+      reset: function(){
+        this.$refs.form.reset();
       }
     }
   }

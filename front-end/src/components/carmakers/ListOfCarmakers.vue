@@ -1,6 +1,14 @@
 <template>
   <v-container>
-    <v-layout>
+    <v-layout v-if="loading" 
+      justify-center
+    >
+      <v-progress-circular
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+    </v-layout>
+    <v-layout v-if="!loading">
       <v-flex md2>
         <h1>{{ title }}</h1>
       </v-flex>
@@ -13,10 +21,9 @@
       </v-flex>
     </v-layout>
     <br />
-    <v-layout>
+    <v-layout v-if="!loading">
       <v-flex>
-        <v-simple-table
-        >
+        <v-simple-table fixed-header height="600px">
           <thead>
             <tr>
               <th class="text-left">Id</th>
@@ -64,12 +71,12 @@
         default: "Carmakers"
       }
     },
-    data: function(){
+    data (){
       return {
-        dialog: false
+        dialog: false,
       }
     },
-    mounted: async function(){
+    mounted: function(){
       this.GET_CARMAKERS();
     },
     methods: {
@@ -91,14 +98,14 @@
         }
       },
       deleteCarmaker: function(carmaker_id){
-        console.log("deleting the carmaker " + carmaker_id);
         this.DELETE_CARMAKER(carmaker_id);
       },
     },
     computed: {
       ...mapState([
         'carmakers',
-        'last_backend_request_status'
+        'loading',
+        'alerts'
       ])
     }
   };
