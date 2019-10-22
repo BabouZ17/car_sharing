@@ -13,7 +13,7 @@ export default class api {
             return response.data;
         } catch (error) {
             return error;
-        } 
+        }
     }
 
     static async getItems() {
@@ -27,7 +27,7 @@ export default class api {
             return response.data;
         } catch (error) {
             return error;
-        }    
+        }
     }
 
     static updateItem(payload) {
@@ -52,13 +52,13 @@ export default class api {
         };
         try {
             const response = await axios.post('/api/car_sharing/carmaker/new', payload, config);
-            return response;
+            return response.data;
         } catch (error) {
             return error;
         }
     }
 
-    static async deleteItem(cid) {
+    static async deleteItem(id) {
         let config = {
             headers: {
                 'Accept': 'application/json'
@@ -66,7 +66,7 @@ export default class api {
         };
         try {
             const response = await axios.delete(`/api/car_sharing/carmaker/${id}/delete`, config);
-            return response;
+            return response.data;
         } catch (error) {
             return error;
         }

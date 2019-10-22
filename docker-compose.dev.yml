@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.6'
 services:
   postgres:
     volumes:
@@ -12,7 +12,7 @@ services:
       - SQL_HOST=postgres
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./backend:/home/sandbox/backend/
+      - ./backend:/home/car_sharing/backend
     depends_on:
       - postgres
       - front-end
@@ -26,6 +26,7 @@ services:
       - BACKEND_SERVICE_PORT=8000
     command: npm run serve 
     volumes:
-      - ./front-end:/home/sandbox/front-end/
+      - ./front-end:/home/car_sharing/front-end
+      - /home/car_sharing/front-end/node_modules
 volumes:
   postgres_volume:

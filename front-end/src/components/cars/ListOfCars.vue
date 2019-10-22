@@ -1,12 +1,7 @@
 <template>
   <v-container>
-    <v-layout v-if="loading"
-      justify-center
-    >
-      <v-progress-circular
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
+    <v-layout v-if="loading" justify-center>
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </v-layout>
     <v-layout v-if="!loading">
       <v-flex md2>
@@ -14,7 +9,8 @@
       </v-flex>
       <v-flex offset-md8>
         <div class="text-right">
-          <v-btn color="teal accent-3" @click="createCar">New Car
+          <v-btn color="teal accent-3" @click="createCar">
+            New Car
             <v-icon>add</v-icon>
           </v-btn>
         </div>
@@ -55,7 +51,7 @@
                   <v-icon color="red">delete</v-icon>
                 </a>
               </td>
-            </tr> 
+            </tr>
           </tbody>
         </v-simple-table>
       </v-flex>
@@ -64,58 +60,54 @@
 </template>
 
 <script>
-  import {mapState, mapActions} from 'vuex';
-  import carActions from '../../store/actions-types/carsActions';
-  import router from '../../router';
+import { mapState, mapActions } from "vuex";
+import carActions from "../../store/actions-types/carsActions";
+import Actions from "../../store/actions-types/Actions";
+import router from "../../router";
 
-  export default {
-    props: {
-      title: {
-        type: String,
-        default: "Cars"
+export default {
+  props: {
+    title: {
+      type: String,
+      default: "Cars"
+    }
+  },
+  data: function() {
+    return {};
+  },
+  mounted: function() {
+    this.GET_CARS();
+  },
+  methods: {
+    ...mapActions([carActions.GET_CARS]),
+    parseDate: function(date) {
+      return new Date(date).toLocaleString();
+    },
+    createCar: function() {
+      if (this.$router.name != "car_new") {
+        router.push({ name: "car_new" });
       }
     },
-    data: function(){
-      return {}
+    updateCar: function(car_id) {
+      if (this.$router.name != "car_update") {
+        router.push({ name: "car_update", params: { car_id: car_id } });
+      }
     },
-    mounted: async function() {
-      this.GET_CARS();
-    },
-    methods: {
-      ...mapActions([
-        carActions.GET_CARS,
-      ]),
-      parseDate: function(date) {
-        return new Date(date).toLocaleString();
-      },
-      createCar: function(){
-        if (this.$router.name != "car_new"){
-          router.push({name: "car_new"});
-        }
-      },
-      updateCar: function(car_id){
-        if (this.$router.name != "car_update"){
-          router.push({name: "car_update", params: {car_id: car_id}});
-        }
-      },
-      deleteCar: function(car_id){
-        console.log("deleting the car " + car_id);
-      }   
-    },
-    computed: {
-      ...mapState([
-        'cars',
-        'loading'
-      ])
+    deleteCar: function(car_id) {
+      console.log("deleting the car " + car_id);
     }
-  };
+  },
+  computed: {
+    ...mapState(["cars", "loading"])
+  }
+};
 </script>
 
 <style>
-  .redYear {
-    color: red;
-  }
-  .greenYear {
-    color: green;
-  }
+.redYear {
+  color: red;
+}
+.greenYear {
+  color: green;
+}
 </style>

@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.6'
 services:
   postgres:
     container_name: "postgres"
@@ -18,7 +18,7 @@ services:
       - TZ=Etc/UTC
     expose:
       - "8000"
-    working_dir: /home/sandbox/backend/
+    working_dir: /home/car_sharing/backend
     depends_on:
       - postgres
       - front-end
@@ -30,5 +30,5 @@ services:
       - TZ=Etc/UTC
     expose:
       - "8001"
-    working_dir: /home/sandbox/front-end/
+    working_dir: /home/car_sharing/front-end
  

@@ -1,24 +1,29 @@
 <template>
-  <v-layout v-if="new_carmaker">
-    <div>
-      <v-alert type="success">
-        {{ message }}
-      </v-alert>
-    </div>
-  </v-layout>
+  <v-container>
+    <v-alert
+      v-for="alert in alerts"
+      :key="alert.uuid"
+      :type="alert.type"
+      dismissible
+      dense
+      @click.native="remove(alert)"
+    >{{ alert.message }}</v-alert>
+  </v-container>
 </template>
 
 <script>
-  export default {
-    props: {
-      message: {
-        type: String,
-        default: ""
-      },
-      new_carmaker: {
-        type: Boolean,
-        default: false
-      }
+import { mapState, mapActions } from "vuex";
+import Actions from "../../store/actions-types/Actions";
+
+export default {
+  methods: {
+    ...mapActions([Actions.REMOVE_ALERT]),
+    remove: function(alarm) {
+      this.REMOVE_ALERT({ uuid: alarm.uuid });
     }
+  },
+  computed: {
+    ...mapState(["alerts"])
   }
+};
 </script>
