@@ -13,7 +13,7 @@ export default class api {
             return response.data;
         } catch (error) {
             return error;
-        } 
+        }
     }
 
     static async getItems() {
@@ -24,10 +24,10 @@ export default class api {
         };
         try {
             const response = await axios.get('/api/car_sharing/cars', config);
-            return response.data;
+            return response;
         } catch (error) {
             return error;
-        }     
+        }
     }
 
     static updateItem(payload) {

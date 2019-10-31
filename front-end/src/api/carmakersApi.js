@@ -24,7 +24,7 @@ export default class api {
         };
         try {
             const response = await axios.get('/api/car_sharing/carmakers', config);
-            return response.data;
+            return response;
         } catch (error) {
             return error;
         }
@@ -52,7 +52,7 @@ export default class api {
         };
         try {
             const response = await axios.post('/api/car_sharing/carmaker/new', payload, config);
-            return response.data;
+            return response;
         } catch (error) {
             return error;
         }
